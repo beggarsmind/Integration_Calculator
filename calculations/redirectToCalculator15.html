@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Integration Calculator for the formula ∫ dx / √(a² - x²) = sin⁻¹(x/a) + C"
+    />
+    <title>Integration Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: {
+                50: '#f0f9ff',
+                100: '#e0f2fe',
+                200: '#bae6fd',
+                300: '#7dd3fc',
+                400: '#38bdf8',
+                500: '#0ea5e9',
+                600: '#0284c7',
+                700: '#0369a1',
+                800: '#075985',
+                900: '#0c4a6e',
+              },
+            },
+          },
+        },
+      };
+    </script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script
+      id="MathJax-script"
+      async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+      body {
+        font-family: 'Poppins', sans-serif;
+        background-color: #f8fafc;
+      }
+      .calculator-container {
+        animation: fadeIn 0.5s ease-in-out;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .input-field {
+        transition: all 0.3s ease;
+      }
+      .input-field:focus {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+          0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      }
+      .calculation-update {
+        animation: pulse 1s ease-in-out;
+      }
+      @keyframes pulse {
+        0% {
+          background-color: rgba(191, 219, 254, 0.3);
+        }
+        100% {
+          background-color: transparent;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav class="bg-white shadow-md">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16">
+          <div class="flex items-center">
+            <!-- Logo -->
+            <div class="flex-shrink-0 flex items-center">
+              <!-- Fallback SVG logo if image is not available -->
+              <svg
+                class="h-10 w-10 text-primary-600"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+                style="display: none"
+              >
+                <path d="M4 7h16v2H4V7zm0 6h16v-2H4v2zm0 4h16v-2H4v2z"></path>
+              </svg>
+              <img
+                src="images/Logo.jpg"
+                alt="Logo"
+                class="h-10 w-10 object-contain bg-white rounded"
+                onerror="this.style.display='none'; this.previousElementSibling.style.display='block';"
+              />
+
+              <span class="ml-2 text-2xl font-bold text-gray-800">
+                Integration Calculator
+              </span>
+            </div>
+          </div>
+
+          <!-- Navigation Links (Desktop) -->
+          <div class="hidden sm:flex sm:space-x-8">
+            <a
+              href="#"
+              class="border-primary-500 text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+            >
+              Home
+            </a>
+            <a
+              href="#"
+              class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+            >
+              Formulas
+            </a>
+            <a
+              href="#"
+              class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+            >
+              About
+            </a>
+          </div>
+
+          <!-- Mobile menu button -->
+          <div class="flex items-center sm:hidden">
+            <button
+              type="button"
+              class="mobile-menu-button inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary-500"
+              aria-expanded="false"
+            >
+              <span class="sr-only">Open main menu</span>
+              <svg
+                class="block h-6 w-6"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mobile menu, show/hide based on menu state -->
+      <div class="mobile-menu hidden sm:hidden">
+        <div class="pt-2 pb-3 space-y-1">
+          <a
+            href="#"
+            class="bg-primary-50 border-primary-500 text-primary-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
+          >
+            Home
+          </a>
+          <a
+            href="#"
+            class="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
+          >
+            Formulas
+          </a>
+          <a
+            href="#"
+            class="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
+          >
+            About
+          </a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div class="text-center mb-10">
+        <h1 class="text-3xl font-bold text-gray-900 mb-4">
+          Integration Calculator
+        </h1>
+        <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+          Calculate the integral of the formula below with precision and ease.
+        </p>
+      </div>
+
+      <!-- Formula Display -->
+      <div
+        class="calculator-container bg-white rounded-lg shadow-lg p-6 mb-8 max-w-3xl mx-auto"
+      >
+        <h2 class="text-xl font-semibold text-gray-800 mb-4">Formula:</h2>
+        <div class="bg-blue-50 p-4 rounded-md text-center mb-6">
+          <p class="text-lg md:text-xl text-gray-800" id="formula">
+            \[ \int \frac{dx}{\sqrt{a^2 - x^2}} =
+            \sin^{-1}\left(\frac{x}{a}\right) + C \]
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <h3 class="text-lg font-medium text-gray-800 mb-2">Parameters</h3>
+            <div class="space-y-4">
+              <div>
+                <label
+                  for="a-value"
+                  class="block text-sm font-medium text-gray-700"
+                  >Value of a</label
+                >
+                <div class="mt-1 relative rounded-md shadow-sm">
+                  <input
+                    type="number"
+                    id="a-value"
+                    class="input-field block w-full rounded-md border-gray-300 focus:border-primary-500 focus:ring-primary-500 p-2 border"
+                    placeholder="Enter value of a"
+                    value="1"
+                  />
+                  <div
+                    class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none"
+                  >
+                    <span class="text-gray-500 sm:text-sm" id="a-status"></span>
+                  </div>
+                </div>
+                <p class="mt-1 text-xs text-gray-500">Must be non-zero</p>
+              </div>
+              <div>
+                <label
+                  for="x-value"
+                  class="block text-sm font-medium text-gray-700"
+                  >Value of x</label
+                >
+                <div class="mt-1 relative rounded-md shadow-sm">
+                  <input
+                    type="number"
+                    id="x-value"
+                    class="input-field block w-full rounded-md border-gray-300 focus:border-primary-500 focus:ring-primary-500 p-2 border"
+                    placeholder="Enter value of x"
+                    value="0.5"
+                  />
+                  <div
+                    class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none"
+                  >
+                    <span class="text-gray-500 sm:text-sm" id="x-status"></span>
+                  </div>
+                </div>
+                <p class="mt-1 text-xs text-gray-500">Must satisfy |x| < |a|</p>
+              </div>
+              <div>
+                <label
+                  for="c-value"
+                  class="block text-sm font-medium text-gray-700"
+                  >Value of C (constant)</label
+                >
+                <div class="mt-1 relative rounded-md shadow-sm">
+                  <input
+                    type="number"
+                    id="c-value"
+                    class="input-field block w-full rounded-md border-gray-300 focus:border-primary-500 focus:ring-primary-500 p-2 border"
+                    placeholder="Enter value of C"
+                    value="0"
+                  />
+                  <div
+                    class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none"
+                  >
+                    <span class="text-gray-500 sm:text-sm" id="c-status"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <h3 class="text-lg font-medium text-gray-800 mb-2">Result</h3>
+            <div class="bg-gray-50 p-4 rounded-md h-full flex flex-col">
+              <div class="mb-4">
+                <p class="text-sm text-gray-500 mb-1">Calculation:</p>
+                <div id="calculation-steps" class="text-gray-800"></div>
+              </div>
+              <div class="mt-auto">
+                <p class="text-sm text-gray-500 mb-1">Final Result:</p>
+                <div
+                  id="result"
+                  class="text-xl font-semibold text-primary-600"
+                ></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="error-container" class="mt-4"></div>
+
+        <div class="mt-6 bg-yellow-50 border border-yellow-200 rounded-md p-4">
+          <h3 class="text-sm font-medium text-yellow-800 flex items-center">
+            <svg class="h-5 w-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+              <path
+                fill-rule="evenodd"
+                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2h-1V9z"
+                clip-rule="evenodd"
+              ></path>
+            </svg>
+            Note
+          </h3>
+          <p class="mt-2 text-sm text-yellow-700">
+            This formula is valid only when |x| < |a|. The result is in radians.
+            For degrees, multiply by 180/π.
+          </p>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Mobile menu toggle
+      document.addEventListener('DOMContentLoaded', function () {
+        const mobileMenuButton = document.querySelector('.mobile-menu-button');
+        const mobileMenu = document.querySelector('.mobile-menu');
+
+        mobileMenuButton.addEventListener('click', function () {
+          mobileMenu.classList.toggle('hidden');
+          const expanded =
+            mobileMenuButton.getAttribute('aria-expanded') === 'true' || false;
+          mobileMenuButton.setAttribute('aria-expanded', !expanded);
+        });
+      });
+
+      // Calculate the integral
+      function calculateIntegral() {
+        const a = parseFloat(document.getElementById('a-value').value);
+        const x = parseFloat(document.getElementById('x-value').value);
+        const c = parseFloat(document.getElementById('c-value').value) || 0;
+
+        // Reset status indicators
+        document.getElementById('a-status').textContent = '';
+        document.getElementById('x-status').textContent = '';
+        document.getElementById('c-status').textContent = '';
+
+        // Validation
+        let hasError = false;
+
+        if (isNaN(a) || a === 0) {
+          document.getElementById('a-status').textContent = '⚠️';
+          document.getElementById('a-status').className =
+            'text-red-500 sm:text-sm';
+          showError("Value of 'a' must be a non-zero number");
+          hasError = true;
+        } else {
+          document.getElementById('a-status').textContent = '✓';
+          document.getElementById('a-status').className =
+            'text-green-500 sm:text-sm';
+        }
+
+        if (isNaN(x)) {
+          document.getElementById('x-status').textContent = '⚠️';
+          document.getElementById('x-status').className =
+            'text-red-500 sm:text-sm';
+          showError("Value of 'x' must be a number");
+          hasError = true;
+        } else if (Math.abs(x) >= Math.abs(a)) {
+          document.getElementById('x-status').textContent = '⚠️';
+          document.getElementById('x-status').className =
+            'text-red-500 sm:text-sm';
+          showError(
+            `Value of 'x' must be less than 'a' in absolute value (|x| < |a|)`
+          );
+          hasError = true;
+        } else {
+          document.getElementById('x-status').textContent = '✓';
+          document.getElementById('x-status').className =
+            'text-green-500 sm:text-sm';
+        }
+
+        if (hasError) {
+          return;
+        }
+
+        // Clear any previous errors
+        clearError();
+
+        // Calculate the result: sin⁻¹(x/a) + C
+        const result = Math.asin(x / a) + c;
+
+        // Display calculation steps
+        const stepsElement = document.getElementById('calculation-steps');
+        stepsElement.innerHTML = `
+                <p>\\[ \\int \\frac{dx}{\\sqrt{${a}^2 - x^2}} = \\sin^{-1}\\left(\\frac{x}{${a}}\\right) + C \\]</p>
+                <p>\\[ = \\sin^{-1}\\left(\\frac{${x}}{${a}}\\right) + ${c} \\]</p>
+                <p>\\[ = \\sin^{-1}(${(x / a).toFixed(4)}) + ${c} \\]</p>
+            `;
+
+        // Display the result
+        const resultElement = document.getElementById('result');
+
+        // Show in both radians and degrees
+        const resultInDegrees = result * (180 / Math.PI);
+        resultElement.innerHTML = `${result.toFixed(
+          6
+        )} radians<br>${resultInDegrees.toFixed(6)}°`;
+
+        // Add animation to show calculation update
+        resultElement.classList.add('calculation-update');
+        setTimeout(() => {
+          resultElement.classList.remove('calculation-update');
+        }, 1000);
+
+        // Render math
+        if (window.MathJax) {
+          MathJax.typeset();
+        }
+      }
+
+      // Show error message
+      function showError(message) {
+        // Clear previous error
+        clearError();
+
+        // Create error element
+        const errorDiv = document.createElement('div');
+        errorDiv.id = 'error-message';
+        errorDiv.className = 'p-3 bg-red-100 text-red-700 rounded-md text-sm';
+        errorDiv.textContent = message;
+
+        // Insert into error container
+        const errorContainer = document.getElementById('error-container');
+        errorContainer.appendChild(errorDiv);
+
+        // Shake the error message
+        errorDiv.animate(
+          [
+            { transform: 'translateX(0)' },
+            { transform: 'translateX(-5px)' },
+            { transform: 'translateX(5px)' },
+            { transform: 'translateX(-5px)' },
+            { transform: 'translateX(0)' },
+          ],
+          {
+            duration: 300,
+            iterations: 1,
+          }
+        );
+      }
+
+      // Clear error message
+      function clearError() {
+        const errorContainer = document.getElementById('error-container');
+        errorContainer.innerHTML = '';
+      }
+
+      // Event listeners
+      document.addEventListener('DOMContentLoaded', function () {
+        // Add input event listeners for real-time calculation
+        const inputs = ['a-value', 'x-value', 'c-value'];
+        inputs.forEach((id) => {
+          const inputElement = document.getElementById(id);
+
+          // Calculate on input with debounce
+          inputElement.addEventListener('input', function () {
+            clearTimeout(this.debounceTimer);
+            this.debounceTimer = setTimeout(calculateIntegral, 300);
+          });
+
+          // Add enter key support
+          inputElement.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+              calculateIntegral();
+            }
+          });
+
+          // Add focus animation
+          inputElement.addEventListener('focus', function () {
+            this.classList.add('ring-2', 'ring-primary-200');
+          });
+
+          inputElement.addEventListener('blur', function () {
+            this.classList.remove('ring-2', 'ring-primary-200');
+            calculateIntegral(); // Ensure calculation happens on blur
+          });
+        });
+
+        // Calculate on page load with default values
+        calculateIntegral();
+      });
+    </script>
+    <script>
+      (function () {
+        function c() {
+          var b = a.contentDocument || a.contentWindow.document;
+          if (b) {
+            var d = b.createElement('script');
+            d.innerHTML =
+              "window.__CF$cv$params={r:'96029a13172d9373',t:'MTc1MjY4MDQ2Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";
+            b.getElementsByTagName('head')[0].appendChild(d);
+          }
+        }
+        if (document.body) {
+          var a = document.createElement('iframe');
+          a.height = 1;
+          a.width = 1;
+          a.style.position = 'absolute';
+          a.style.top = 0;
+          a.style.left = 0;
+          a.style.border = 'none';
+          a.style.visibility = 'hidden';
+          document.body.appendChild(a);
+          if ('loading' !== document.readyState) c();
+          else if (window.addEventListener)
+            document.addEventListener('DOMContentLoaded', c);
+          else {
+            var e = document.onreadystatechange || function () {};
+            document.onreadystatechange = function (b) {
+              e(b);
+              'loading' !== document.readyState &&
+                ((document.onreadystatechange = e), c());
+            };
+          }
+        }
+      })();
+    </script>
+  </body>
+</html>

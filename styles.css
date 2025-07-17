@@ -1,0 +1,176 @@
+/* Apply styles to the body */
+body {
+  font-family: sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  background-color: #f4f4f9;
+  flex-direction: column; /* Ensure content is aligned vertically */
+}
+/* Style for the serial numbers in the buttons */
+.sno {
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+/* Style the <h1> */
+h1 {
+  font-family: 'Lora', serif;
+  text-align: center;
+  font-size: 36px;
+  color: #333;
+  margin-top: 190px;
+  margin-bottom: 20px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-transform: uppercase; /* Make the text uppercase for emphasis */
+  padding: 10px 0;
+  width: 100%;
+}
+
+/* Style the container */
+.container {
+  background-color: #fff;
+  padding: 10px;
+  margin-bottom: 40px;
+  margin-top: -20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 80%;
+  max-width: 1420px;
+  text-align: center;
+}
+
+/* Style the <p> element */
+p {
+  font-family: sans-serif;
+  font-size: 32px; /* Set the font size */
+  color: darkblue; /* Set the text color */
+  font-weight: bold; /* Make the text bold */
+  margin-bottom: 15px;
+  margin-top: -2px; /* Add some space below the <p> element */
+  text-align: center; /* Center the text */
+}
+
+/* Style the button row */
+.button-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+  gap: 10px; /* Space between buttons */
+  flex-wrap: wrap; /* Allow buttons to wrap on small screens */
+}
+
+/* Style the formula buttons */
+.formula-btn {
+  padding: 12px 20px;
+  margin: 5px;
+  font-size: 18px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.3s;
+  box-sizing: border-box;
+  width: 40%; /* Set width to 30% for three buttons in a row */
+}
+
+/* Button hover effect */
+.formula-btn:hover {
+  background-color: #45a049;
+}
+
+/* Style the Calculate button */
+button {
+  padding: 12px 25px;
+  font-size: 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: cursive;
+  margin-top: 15px;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+/* Style the result and steps */
+#result {
+  margin-top: 20px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+#steps {
+  margin-top: 10px;
+  font-size: 16px;
+  white-space: pre-wrap;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .container {
+    width: 90%;
+    padding: 15px;
+  }
+
+  .formula-btn {
+    width: 48%; /* Buttons take up nearly half-width on medium screens */
+    margin-bottom: 10px;
+  }
+
+  button {
+    width: 100%; /* Calculate button also takes up full width on medium screens */
+    margin-top: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    width: 85%;
+    margin-top: 10px;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+
+  /* Fix <h1> on small screens */
+  h1 {
+    font-size: 22px; /* Adjust the font size for smaller screens */
+    margin-top: 630px;
+    font-weight: bold; /* Remove the large margin-top */
+    margin-bottom: 5px;
+    position: relative; /* Adjust bottom margin */
+  }
+
+  p {
+    font-size: 28px; /* Adjust the font size for better readability */
+  }
+
+  .formula-btn {
+    font-size: 15px; /* Slightly smaller font for very small screens */
+    border-radius: 6px;
+    width: 90%; /* Buttons take full width on small screens */
+  }
+
+  button {
+    font-size: 14px;
+    padding: 10px 20px;
+    font-family: sans-serif;
+    width: 100%; /* Calculate button takes full width on small screens */
+  }
+
+  #result {
+    font-size: 16px; /* Adjust result font size for smaller screens */
+  }
+
+  #steps {
+    font-size: 14px; /* Adjust steps font size for smaller screens */
+  }
+}

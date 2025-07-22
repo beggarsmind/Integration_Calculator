@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Integration Calculator - Cosecant Cotangent Product</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        margin: 0;
+        padding: 20px;
+        background-color: #f0f4f8;
+        color: #333;
+      }
+
+      h1 {
+        color: #1a5276;
+        text-align: center;
+        margin-bottom: 30px;
+        padding: 20px;
+        background-color: #d4e6f1;
+        border-radius: 12px;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+        font-size: 28px;
+      }
+
+      .container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 30px;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .left-side,
+      .right-side {
+        flex: 1;
+        min-width: 300px;
+        background-color: white;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+      }
+
+      .form-group {
+        margin-bottom: 25px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 10px;
+        font-weight: bold;
+        color: #2874a6;
+        font-size: 18px;
+      }
+
+      input[type='number'] {
+        width: 100%;
+        padding: 12px;
+        border: 2px solid #d4e6f1;
+        border-radius: 6px;
+        font-size: 16px;
+        transition: border-color 0.3s;
+      }
+
+      input[type='number']:focus {
+        border-color: #3498db;
+        outline: none;
+        box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+      }
+
+      h2 {
+        color: #2874a6;
+        border-bottom: 3px solid #3498db;
+        padding-bottom: 10px;
+        margin-top: 0;
+        font-size: 24px;
+      }
+
+      h3 {
+        font-size: 16px;
+        font-weight: normal;
+        color: #5d6d7e;
+        margin: 12px 0;
+        line-height: 1.5;
+      }
+
+      p {
+        font-weight: bold;
+        margin: 20px 0 10px;
+        color: #2c3e50;
+        font-size: 18px;
+      }
+
+      #result {
+        background-color: #ebf5fb;
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 25px;
+        font-size: 20px;
+        border-left: 5px solid #3498db;
+      }
+
+      #steps {
+        background-color: #f8f9fa;
+        padding: 20px;
+        border-radius: 8px;
+        border-left: 5px solid #2ecc71;
+      }
+
+      #steps ol {
+        padding-left: 20px;
+      }
+
+      #steps li {
+        margin-bottom: 20px;
+      }
+
+      .formula {
+        text-align: center;
+        font-size: 24px;
+        margin: 15px 0;
+        color: #1a5276;
+      }
+
+      .math-symbol {
+        font-family: 'Times New Roman', serif;
+        font-style: italic;
+      }
+
+      @media (max-width: 768px) {
+        .container {
+          flex-direction: column;
+        }
+
+        h1 {
+          font-size: 24px;
+          padding: 15px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1>
+      Trigonometric Integration Formula:<br /><br />
+      ∫ cosec(x)cot(x) dx = -cosec(x) + C
+    </h1>
+    <div class="container">
+      <div class="left-side">
+        <h2>Enter Value:</h2>
+
+        <div class="form-group">
+          <label for="x-value">Enter the value of x (in radians):</label>
+          <input
+            type="number"
+            id="x-value"
+            oninput="calculate()"
+            step="any"
+            placeholder="Enter a value..."
+          />
+        </div>
+
+        <p>Instructions:</p>
+        <h3>
+          1. Enter the value of x in radians (e.g., π/4 ≈ 0.785, π/2 ≈ 1.57, π ≈
+          3.14)
+        </h3>
+        <h3>
+          2. The calculator will find the indefinite integral of cosec(x)cot(x)
+        </h3>
+        <h3>
+          3. Remember that -cosec(x) is the antiderivative of cosec(x)cot(x)
+        </h3>
+
+        <div class="formula">
+          <span class="math-symbol">∫</span> cosec(x)cot(x) dx = -cosec(x) + C
+        </div>
+      </div>
+
+      <div class="right-side">
+        <div id="result">Enter a value to see the result</div>
+        <div id="steps"></div>
+      </div>
+    </div>
+
+    <script>
+      // Function to handle the calculation of the integral of cosec(x)cot(x)
+      function calculate() {
+        const x = parseFloat(document.getElementById('x-value').value);
+
+        if (isNaN(x)) {
+          document.getElementById('result').innerHTML =
+            '<strong>Please enter a valid number for x.</strong>';
+          document.getElementById('steps').innerHTML = ''; // Clear the steps
+          return;
+        }
+
+        // Check if x is at a value where cosec(x) is undefined (x = nπ)
+        const modPi = Math.abs(x % Math.PI);
+        const nearZeroPi = modPi < 0.01 || Math.abs(modPi - Math.PI) < 0.01;
+
+        if (nearZeroPi) {
+          document.getElementById('result').innerHTML =
+            '<strong>Warning: cosec(x) is undefined at x = nπ. Please choose a different value.</strong>';
+          document.getElementById('steps').innerHTML = `
+          <p><strong>Mathematical explanation:</strong></p>
+          <p>The cosecant function is defined as cosec(x) = 1/sin(x). When sin(x) = 0, which happens at x = nπ (where n is an integer), cosec(x) becomes undefined.</p>
+          <p>Since both cosec(x) and cosec(x)cot(x) are undefined at these points, we cannot evaluate the integral at these specific values.</p>
+          <p>Try entering a different value of x that is not close to 0, π, or any multiple of π.</p>`;
+          return;
+        }
+
+        // Calculate the result using the formula
+        const result = -1 / Math.sin(x);
+
+        // Display the result with appropriate formatting
+        document.getElementById(
+          'result'
+        ).innerHTML = `<strong>Result: ∫ cosec(x)cot(x) dx = -cosec(${x.toFixed(
+          4
+        )}) + C = ${result.toFixed(4)} + C</strong>`;
+
+        // Generate step-by-step solution
+        let stepsHTML = `
+        <strong>Steps to Solve:</strong>
+        <ol>
+          <li><strong>Understand the formula:</strong><br>
+              The formula for integrating cosec(x)cot(x) is:
+              ∫ cosec(x)cot(x) dx = -cosec(x) + C
+          </li>
+          <li><strong>Apply the formula directly:</strong><br>
+              For x = ${x.toFixed(4)}:<br>
+              ∫ cosec(x)cot(x) dx = -cosec(${x.toFixed(4)}) + C
+          </li>
+          <li><strong>Calculate -cosec(${x.toFixed(4)}):</strong><br>
+              cosec(x) = 1/sin(x)<br>
+              cosec(${x.toFixed(4)}) = 1/sin(${x.toFixed(4)}) = 1/${Math.sin(
+          x
+        ).toFixed(4)} = ${(1 / Math.sin(x)).toFixed(4)}<br>
+              -cosec(${x.toFixed(4)}) = -${(1 / Math.sin(x)).toFixed(
+          4
+        )} = ${result.toFixed(4)}
+          </li>
+          <li><strong>Final result:</strong><br>
+              ∫ cosec(x)cot(x) dx = ${result.toFixed(4)} + C
+          </li>
+        </ol>
+        <p><strong>Note:</strong> The constant of integration (C) represents the fact that there are infinitely many antiderivatives that differ by a constant.</p>
+        <p><strong>Domain note:</strong> This formula is valid for all x where cosec(x) is defined, which is all x except x = nπ, where n is an integer.</p>
+        <p><strong>Verification:</strong> You can verify this result by differentiating -cosec(x) to get cosec(x)cot(x).</p>`;
+
+        document.getElementById('steps').innerHTML = stepsHTML;
+      }
+    </script>
+    <script>
+      (function () {
+        function c() {
+          var b = a.contentDocument || a.contentWindow.document;
+          if (b) {
+            var d = b.createElement('script');
+            d.innerHTML =
+              "window.__CF$cv$params={r:'95e0d5f900fc9380',t:'MTc1MjMyNjQwNC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";
+            b.getElementsByTagName('head')[0].appendChild(d);
+          }
+        }
+        if (document.body) {
+          var a = document.createElement('iframe');
+          a.height = 1;
+          a.width = 1;
+          a.style.position = 'absolute';
+          a.style.top = 0;
+          a.style.left = 0;
+          a.style.border = 'none';
+          a.style.visibility = 'hidden';
+          document.body.appendChild(a);
+          if ('loading' !== document.readyState) c();
+          else if (window.addEventListener)
+            document.addEventListener('DOMContentLoaded', c);
+          else {
+            var e = document.onreadystatechange || function () {};
+            document.onreadystatechange = function (b) {
+              e(b);
+              'loading' !== document.readyState &&
+                ((document.onreadystatechange = e), c());
+            };
+          }
+        }
+      })();
+    </script>
+  </body>
+</html>

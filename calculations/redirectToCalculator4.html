@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Exponential Integration Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script
+      id="MathJax-script"
+      async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+      body {
+        font-family: 'Poppins', sans-serif;
+      }
+
+      .shake {
+        animation: shake 0.5s;
+      }
+
+      @keyframes shake {
+        0% {
+          transform: translateX(0);
+        }
+        20% {
+          transform: translateX(-10px);
+        }
+        40% {
+          transform: translateX(10px);
+        }
+        60% {
+          transform: translateX(-10px);
+        }
+        80% {
+          transform: translateX(10px);
+        }
+        100% {
+          transform: translateX(0);
+        }
+      }
+
+      .input-group:focus-within label {
+        color: #4f46e5;
+      }
+
+      .input-group:focus-within input {
+        border-color: #4f46e5;
+      }
+
+      .formula-display {
+        min-height: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .result-display {
+        min-height: 60px;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-50">
+    <div class="min-h-screen flex flex-col">
+      <!-- Header -->
+      <nav class="bg-white shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="flex justify-between h-16">
+            <div class="flex items-center">
+              <!-- Logo -->
+              <div class="flex-shrink-0 flex items-center">
+                <img
+                  src="/images/Logo.jpg"
+                  alt="Logo"
+                  class="h-10 w-10 object-contain bg-white rounded"
+                />
+
+                <span class="ml-2 text-2xl font-bold text-gray-800">
+                  Integration Calculator
+                </span>
+              </div>
+            </div>
+
+            <!-- Navigation Links (Desktop) -->
+            <div class="hidden sm:flex sm:space-x-8">
+              <a
+                href="#"
+                class="border-indigo-500 text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+              >
+                Home
+              </a>
+              <a
+                href="#"
+                class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+              >
+                Formulas
+              </a>
+              <a
+                href="#"
+                class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+              >
+                About
+              </a>
+            </div>
+
+            <!-- Mobile menu button -->
+            <div class="flex items-center sm:hidden">
+              <button
+                type="button"
+                class="mobile-menu-button inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500"
+                aria-expanded="false"
+              >
+                <span class="sr-only">Open main menu</span>
+                <svg
+                  class="block h-6 w-6"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  aria-hidden="true"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M4 6h16M4 12h16M4 18h16"
+                  />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mobile menu, show/hide based on menu state -->
+        <div class="mobile-menu hidden sm:hidden">
+          <div class="pt-2 pb-3 space-y-1">
+            <a
+              href="#"
+              class="bg-indigo-50 border-indigo-500 text-indigo-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
+            >
+              Home
+            </a>
+            <a
+              href="#"
+              class="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
+            >
+              Formulas
+            </a>
+            <a
+              href="#"
+              class="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
+            >
+              About
+            </a>
+          </div>
+        </div>
+      </nav>
+
+      <!-- Main Content -->
+      <main class="flex-grow container mx-auto px-4 py-8">
+        <div class="max-w-3xl mx-auto">
+          <!-- Calculator Card -->
+          <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+            <!-- Formula Display -->
+            <div class="bg-indigo-50 p-6">
+              <h2 class="text-lg font-semibold text-gray-700 mb-3">
+                Integration Formula
+              </h2>
+              <div class="formula-display bg-white rounded-lg p-4 shadow-inner">
+                <div id="formula" class="text-center">
+                  \[ \int e^x \, dx = e^x + C \]
+                </div>
+              </div>
+            </div>
+
+            <!-- Input Section -->
+            <div class="p-6 border-t border-gray-200">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Input for x -->
+                <div class="input-group">
+                  <label
+                    for="x-value"
+                    class="block text-sm font-medium text-gray-700 mb-1"
+                    >Value of x</label
+                  >
+                  <div class="relative">
+                    <input
+                      type="number"
+                      id="x-value"
+                      class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                      placeholder="Enter x"
+                      value="1"
+                      step="0.1"
+                    />
+                    <div
+                      id="x-status"
+                      class="absolute right-3 top-1/2 transform -translate-y-1/2 text-green-500 hidden"
+                    >
+                      <i class="fas fa-check-circle"></i>
+                    </div>
+                  </div>
+                  <p class="text-xs text-gray-500 mt-1">
+                    Enter any real number
+                  </p>
+                </div>
+
+                <!-- Input for C -->
+                <div class="input-group">
+                  <label
+                    for="c-value"
+                    class="block text-sm font-medium text-gray-700 mb-1"
+                    >Constant C (optional)</label
+                  >
+                  <div class="relative">
+                    <input
+                      type="number"
+                      id="c-value"
+                      class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                      placeholder="Enter C"
+                      value="0"
+                    />
+                    <div
+                      id="c-status"
+                      class="absolute right-3 top-1/2 transform -translate-y-1/2 text-green-500 hidden"
+                    >
+                      <i class="fas fa-check-circle"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Info Box -->
+              <div
+                class="mt-6 bg-blue-50 border-l-4 border-blue-400 p-4 rounded-r-lg"
+              >
+                <div class="flex">
+                  <div class="flex-shrink-0">
+                    <i class="fas fa-info-circle text-blue-400"></i>
+                  </div>
+                  <div class="ml-3">
+                    <p class="text-sm text-blue-700">
+                      The exponential function e^x is one of the special
+                      functions where the derivative and integral are the same
+                      function. This makes it particularly useful in calculus
+                      and differential equations.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Calculate Button -->
+              <div class="mt-6">
+                <button
+                  id="calculate-btn"
+                  class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 px-4 rounded-lg transition-colors shadow-md flex items-center justify-center"
+                >
+                  <i class="fas fa-calculator mr-2"></i>
+                  Calculate Result
+                </button>
+              </div>
+            </div>
+
+            <!-- Result Section -->
+            <div class="bg-gray-50 p-6 border-t border-gray-200">
+              <h3 class="text-lg font-semibold text-gray-700 mb-3">Result</h3>
+
+              <!-- Substituted Formula -->
+              <div class="mb-4">
+                <p class="text-sm text-gray-600 mb-1">Substituted Formula:</p>
+                <div
+                  class="bg-white rounded-lg p-4 shadow-inner result-display"
+                >
+                  <div id="substituted-formula" class="text-center">
+                    \[ \int \frac{dx}{1^2 + 2^2} = \frac{1}{2}
+                    \tan^{-1}\left(\frac{1}{2}\right) + 0 \]
+                  </div>
+                </div>
+              </div>
+
+              <!-- Calculated Result -->
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <p class="text-sm text-gray-600 mb-1">Result:</p>
+                  <div class="bg-white rounded-lg p-4 shadow-inner">
+                    <div
+                      id="result-radians"
+                      class="text-center font-medium text-gray-800"
+                    >
+                      0.6931
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <p class="text-sm text-gray-600 mb-1">Result (in degrees):</p>
+                  <div class="bg-white rounded-lg p-4 shadow-inner">
+                    <div
+                      id="result-degrees"
+                      class="text-center font-medium text-gray-800"
+                    >
+                      39.7149°
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Calculation Steps -->
+              <div class="mt-6">
+                <h3 class="text-lg font-semibold text-gray-700 mb-3">
+                  Calculation Steps
+                </h3>
+                <div
+                  id="calculation-steps"
+                  class="bg-white rounded-lg p-6 shadow-inner"
+                >
+                  <!-- Steps will be inserted here by JavaScript -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        // Elements
+        const xInput = document.getElementById('x-value');
+        const cInput = document.getElementById('c-value');
+        const calculateBtn = document.getElementById('calculate-btn');
+        const substitutedFormula = document.getElementById(
+          'substituted-formula'
+        );
+        const resultRadians = document.getElementById('result-radians');
+        const resultDegrees = document.getElementById('result-degrees');
+        const xStatus = document.getElementById('x-status');
+        const cStatus = document.getElementById('c-status');
+        const mobileMenuButton = document.querySelector('.mobile-menu-button');
+        const mobileMenu = document.querySelector('.mobile-menu');
+
+        // Validate inputs and update UI
+        function validateInputs() {
+          // Validate x (any real number is valid)
+          const xValue = parseFloat(xInput.value);
+          if (!isNaN(xValue)) {
+            xStatus.classList.remove('hidden');
+            xStatus.innerHTML = '<i class="fas fa-check-circle"></i>';
+            xStatus.classList.remove('text-red-500');
+            xStatus.classList.add('text-green-500');
+            xInput.classList.remove('border-red-500');
+          } else {
+            xStatus.classList.remove('hidden');
+            xStatus.innerHTML = '<i class="fas fa-times-circle"></i>';
+            xStatus.classList.remove('text-green-500');
+            xStatus.classList.add('text-red-500');
+            xInput.classList.add('border-red-500');
+          }
+
+          // Validate C (any value is valid, including empty)
+          const cValue = cInput.value === '' ? 0 : parseFloat(cInput.value);
+          if (!isNaN(cValue)) {
+            cStatus.classList.remove('hidden');
+            cStatus.innerHTML = '<i class="fas fa-check-circle"></i>';
+            cStatus.classList.remove('text-red-500');
+            cStatus.classList.add('text-green-500');
+            cInput.classList.remove('border-red-500');
+          } else {
+            cStatus.classList.remove('hidden');
+            cStatus.innerHTML = '<i class="fas fa-times-circle"></i>';
+            cStatus.classList.remove('text-green-500');
+            cStatus.classList.add('text-red-500');
+            cInput.classList.add('border-red-500');
+          }
+
+          return !isNaN(xValue) && !isNaN(cValue);
+        }
+
+        // Calculate the result
+        function calculateResult() {
+          if (!validateInputs()) {
+            // Shake the inputs that are invalid
+            const xValue = parseFloat(xInput.value);
+            if (isNaN(xValue)) {
+              xInput.classList.add('shake');
+              setTimeout(() => xInput.classList.remove('shake'), 500);
+            }
+
+            if (isNaN(parseFloat(cInput.value)) && cInput.value !== '') {
+              cInput.classList.add('shake');
+              setTimeout(() => cInput.classList.remove('shake'), 500);
+            }
+
+            return;
+          }
+
+          const x = parseFloat(xInput.value);
+          const c = cInput.value === '' ? 0 : parseFloat(cInput.value);
+
+          // Calculate the result: e^x + C
+          const expX = Math.exp(x); // Using Math.exp for e^x
+          const result = expX + c;
+
+          // Update the substituted formula
+          substitutedFormula.innerHTML = `\\[ \\int e^{${x}} \\, dx = e^{${x}} + ${c} \\]`;
+
+          // Update the results
+          resultRadians.textContent = result.toFixed(4);
+          resultDegrees.textContent =
+            (result * (180 / Math.PI)).toFixed(4) + '°';
+
+          // Update calculation steps
+          updateCalculationSteps(x, c, result);
+
+          // Refresh MathJax rendering
+          MathJax.typeset();
+        }
+
+        // Update calculation steps
+        function updateCalculationSteps(x, c, result) {
+          const stepsDiv = document.getElementById('calculation-steps');
+          const expX = Math.exp(x).toFixed(6);
+          const finalResult = result.toFixed(6);
+
+          stepsDiv.innerHTML = `
+                  <h3 class="text-lg font-semibold text-gray-800 mb-4">Steps to Solve:</h3>
+                  
+                  <div class="space-y-6">
+                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                      <h4 class="font-medium text-indigo-700 mb-2">1. Understand the formula</h4>
+                      <p class="text-gray-700">
+                        We need to evaluate the integral: ∫ e<sup>x</sup> dx
+                      </p>
+                      <p class="text-gray-700 mt-2">
+                        The formula for this integral is: e<sup>x</sup> + C
+                      </p>
+                      <p class="text-gray-700 mt-2">
+                        Note: The exponential function is its own derivative and integral, which makes this calculation straightforward.
+                      </p>
+                    </div>
+                    
+                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                      <h4 class="font-medium text-indigo-700 mb-2">2. Substitute the values</h4>
+                      <p class="text-gray-700">
+                        Given values:
+                      </p>
+                      <ul class="list-disc list-inside text-gray-700 space-y-1 mt-2">
+                        <li>x = ${x}</li>
+                        <li>C = ${c}</li>
+                      </ul>
+                    </div>
+                    
+                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                      <h4 class="font-medium text-indigo-700 mb-2">3. Calculate e<sup>x</sup></h4>
+                      <p class="text-gray-700">
+                        e<sup>${x}</sup> = ${expX}
+                      </p>
+                      <p class="text-gray-700 mt-2">
+                        Where e ≈ 2.71828 is the base of the natural logarithm.
+                      </p>
+                    </div>
+                    
+                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                      <h4 class="font-medium text-indigo-700 mb-2">4. Add the constant C</h4>
+                      <p class="text-gray-700">
+                        e<sup>${x}</sup> + C = ${expX} + ${c} = ${finalResult}
+                      </p>
+                    </div>
+                    
+                    <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                      <h4 class="font-medium text-blue-800 mb-2">Final Result</h4>
+                      <p class="text-gray-700">
+                        ∫ e<sup>${x}</sup> dx = ${finalResult}
+                      </p>
+                      <p class="text-gray-700 mt-2">
+                        In degrees: ${((result * 180) / Math.PI).toFixed(
+                          4
+                        )}° (if applicable)
+                      </p>
+                    </div>
+                  </div>
+                `;
+        }
+
+        // Event listeners
+        xInput.addEventListener('input', validateInputs);
+        cInput.addEventListener('input', validateInputs);
+        calculateBtn.addEventListener('click', calculateResult);
+
+        // Mobile menu toggle
+        if (mobileMenuButton) {
+          mobileMenuButton.addEventListener('click', function () {
+            mobileMenu.classList.toggle('hidden');
+          });
+        }
+
+        // Initial validation and calculation
+        validateInputs();
+        calculateResult();
+      });
+    </script>
+    <script>
+      (function () {
+        function c() {
+          var b = a.contentDocument || a.contentWindow.document;
+          if (b) {
+            var d = b.createElement('script');
+            d.innerHTML =
+              "window.__CF$cv$params={r:'960a5db430339a9c',t:'MTc1Mjc2MTg4MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";
+            b.getElementsByTagName('head')[0].appendChild(d);
+          }
+        }
+        if (document.body) {
+          var a = document.createElement('iframe');
+          a.height = 1;
+          a.width = 1;
+          a.style.position = 'absolute';
+          a.style.top = 0;
+          a.style.left = 0;
+          a.style.border = 'none';
+          a.style.visibility = 'hidden';
+          document.body.appendChild(a);
+          if ('loading' !== document.readyState) c();
+          else if (window.addEventListener)
+            document.addEventListener('DOMContentLoaded', c);
+          else {
+            var e = document.onreadystatechange || function () {};
+            document.onreadystatechange = function (b) {
+              e(b);
+              'loading' !== document.readyState &&
+                ((document.onreadystatechange = e), c());
+            };
+          }
+        }
+      })();
+    </script>
+  </body>
+</html>

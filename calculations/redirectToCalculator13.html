@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Integration Calculator - Inverse Sine Function</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        margin: 0;
+        padding: 20px;
+        background-color: #f0f4f8;
+        color: #333;
+      }
+
+      h1 {
+        color: #1a5276;
+        text-align: center;
+        margin-bottom: 30px;
+        padding: 20px;
+        background-color: #d4e6f1;
+        border-radius: 12px;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+        font-size: 28px;
+      }
+
+      .container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 30px;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .left-side,
+      .right-side {
+        flex: 1;
+        min-width: 300px;
+        background-color: white;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+      }
+
+      .form-group {
+        margin-bottom: 25px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 10px;
+        font-weight: bold;
+        color: #2874a6;
+        font-size: 18px;
+      }
+
+      input[type='number'] {
+        width: 100%;
+        padding: 12px;
+        border: 2px solid #d4e6f1;
+        border-radius: 6px;
+        font-size: 16px;
+        transition: border-color 0.3s;
+      }
+
+      input[type='number']:focus {
+        border-color: #3498db;
+        outline: none;
+        box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+      }
+
+      h2 {
+        color: #2874a6;
+        border-bottom: 3px solid #3498db;
+        padding-bottom: 10px;
+        margin-top: 0;
+        font-size: 24px;
+      }
+
+      h3 {
+        font-size: 16px;
+        font-weight: normal;
+        color: #5d6d7e;
+        margin: 12px 0;
+        line-height: 1.5;
+      }
+
+      p {
+        font-weight: bold;
+        margin: 20px 0 10px;
+        color: #2c3e50;
+        font-size: 18px;
+      }
+
+      #result {
+        background-color: #ebf5fb;
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 25px;
+        font-size: 20px;
+        border-left: 5px solid #3498db;
+      }
+
+      #steps {
+        background-color: #f8f9fa;
+        padding: 20px;
+        border-radius: 8px;
+        border-left: 5px solid #2ecc71;
+      }
+
+      #steps ol {
+        padding-left: 20px;
+      }
+
+      #steps li {
+        margin-bottom: 20px;
+      }
+
+      .formula {
+        text-align: center;
+        font-size: 24px;
+        margin: 15px 0;
+        color: #1a5276;
+      }
+
+      .math-symbol {
+        font-family: 'Times New Roman', serif;
+        font-style: italic;
+      }
+
+      .info-box {
+        background-color: #e8f8f5;
+        border-left: 5px solid #1abc9c;
+        padding: 15px;
+        margin-top: 20px;
+        border-radius: 5px;
+      }
+
+      @media (max-width: 768px) {
+        .container {
+          flex-direction: column;
+        }
+
+        h1 {
+          font-size: 24px;
+          padding: 15px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1>
+      Inverse Trigonometric Integration Formula:<br /><br />
+      ∫ 1/√(1-x<sup>2</sup>) dx = sin<sup>-1</sup>(x) + C
+    </h1>
+    <div class="container">
+      <div class="left-side">
+        <h2>Enter Value:</h2>
+
+        <div class="form-group">
+          <label for="x-value">Enter the value of x (between -1 and 1):</label>
+          <input
+            type="number"
+            id="x-value"
+            oninput="calculate()"
+            step="any"
+            placeholder="Enter a value..."
+            min="-1"
+            max="1"
+          />
+        </div>
+
+        <p>Instructions:</p>
+        <h3>1. Enter a value for x between -1 and 1</h3>
+        <h3>
+          2. The calculator will find the indefinite integral of
+          1/√(1-x<sup>2</sup>)
+        </h3>
+        <h3>
+          3. Remember that sin<sup>-1</sup>(x) is the antiderivative of
+          1/√(1-x<sup>2</sup>)
+        </h3>
+
+        <div class="formula">
+          <span class="math-symbol">∫</span> 1/√(1-x<sup>2</sup>) dx =
+          sin<sup>-1</sup>(x) + C
+        </div>
+
+        <div class="info-box">
+          <p style="margin-top: 0">
+            <strong>About Inverse Sine Function:</strong>
+          </p>
+          <p style="font-weight: normal">
+            The inverse sine function (also called arcsin or sin<sup>-1</sup>)
+            has the following properties:
+          </p>
+          <ul style="font-weight: normal">
+            <li>Domain: [-1, 1]</li>
+            <li>Range: [-π/2, π/2] (or [-90°, 90°])</li>
+            <li>If sin(θ) = x, then sin<sup>-1</sup>(x) = θ</li>
+          </ul>
+          <p style="font-weight: normal">
+            This integral appears in many physics and engineering applications.
+          </p>
+        </div>
+      </div>
+
+      <div class="right-side">
+        <div id="result">Enter a value to see the result</div>
+        <div id="steps"></div>
+      </div>
+    </div>
+
+    <script>
+      // Function to handle the calculation of the integral of 1/sqrt(1-x^2)
+      function calculate() {
+        const x = parseFloat(document.getElementById('x-value').value);
+
+        if (isNaN(x)) {
+          document.getElementById('result').innerHTML =
+            '<strong>Please enter a valid number for x.</strong>';
+          document.getElementById('steps').innerHTML = ''; // Clear the steps
+          return;
+        }
+
+        // Check if x is within the valid domain (-1 to 1)
+        if (x <= -1 || x >= 1) {
+          document.getElementById('result').innerHTML =
+            '<strong>Warning: The function 1/√(1-x<sup>2</sup>) is only defined for -1 < x < 1.</strong>';
+          document.getElementById('steps').innerHTML = `
+          <p><strong>Mathematical explanation:</strong></p>
+          <p>The expression 1/√(1-x<sup>2</sup>) requires that 1-x<sup>2</sup> > 0 for the square root to be defined in the real number system.</p>
+          <p>Solving this inequality: 1-x<sup>2</sup> > 0 ⟹ x<sup>2</sup> < 1 ⟹ -1 < x < 1</p>
+          <p>When x = -1 or x = 1, the denominator becomes zero, making the function undefined.</p>
+          <p>When |x| > 1, the expression under the square root becomes negative, which is not defined in the real number system.</p>
+          <p>Please enter a value between -1 and 1 (exclusive).</p>`;
+          return;
+        }
+
+        // Calculate the result using the formula
+        const result = Math.asin(x);
+
+        // Display the result with appropriate formatting
+        document.getElementById(
+          'result'
+        ).innerHTML = `<strong>Result: ∫ 1/√(1-x<sup>2</sup>) dx = sin<sup>-1</sup>(${x.toFixed(
+          4
+        )}) + C = ${result.toFixed(4)} + C</strong>`;
+
+        // Calculate the function value for display in steps
+        const functionValue = 1 / Math.sqrt(1 - x * x);
+
+        // Generate step-by-step solution
+        let stepsHTML = `
+        <strong>Steps to Solve:</strong>
+        <ol>
+          <li><strong>Understand the formula:</strong><br>
+              The formula for integrating 1/√(1-x<sup>2</sup>) is:
+              ∫ 1/√(1-x<sup>2</sup>) dx = sin<sup>-1</sup>(x) + C
+          </li>
+          <li><strong>Apply the formula directly:</strong><br>
+              For x = ${x.toFixed(4)}:<br>
+              ∫ 1/√(1-${x.toFixed(
+                4
+              )}<sup>2</sup>) dx = sin<sup>-1</sup>(${x.toFixed(4)}) + C
+          </li>
+          <li><strong>Calculate sin<sup>-1</sup>(${x.toFixed(4)}):</strong><br>
+              sin<sup>-1</sup>(${x.toFixed(4)}) = ${result.toFixed(
+          4
+        )} radians<br>
+              sin<sup>-1</sup>(${x.toFixed(4)}) = ${(
+          (result * 180) /
+          Math.PI
+        ).toFixed(4)}°
+          </li>
+          <li><strong>Final result:</strong><br>
+              ∫ 1/√(1-x<sup>2</sup>) dx = ${result.toFixed(4)} + C
+          </li>
+        </ol>
+        <p><strong>Note:</strong> The constant of integration (C) represents the fact that there are infinitely many antiderivatives that differ by a constant.</p>
+        <p><strong>Domain note:</strong> This formula is valid for all x where -1 < x < 1.</p>
+        <p><strong>For reference:</strong> At x = ${x.toFixed(
+          4
+        )}, 1/√(1-${x.toFixed(4)}<sup>2</sup>) = ${functionValue.toFixed(4)}</p>
+        
+        <div class="info-box" style="background-color: #edf7ff; border-left-color: #3498db;">
+          <p style="margin-top: 0;"><strong>Verification:</strong></p>
+          <p style="font-weight: normal;">We can verify this result by differentiating sin<sup>-1</sup>(x):</p>
+          <p style="font-weight: normal;">d/dx[sin<sup>-1</sup>(x)] = 1/√(1-x<sup>2</sup>)</p>
+          <p style="font-weight: normal;">This confirms that sin<sup>-1</sup>(x) is indeed the antiderivative of 1/√(1-x<sup>2</sup>).</p>
+        </div>`;
+
+        document.getElementById('steps').innerHTML = stepsHTML;
+      }
+    </script>
+    <script>
+      (function () {
+        function c() {
+          var b = a.contentDocument || a.contentWindow.document;
+          if (b) {
+            var d = b.createElement('script');
+            d.innerHTML =
+              "window.__CF$cv$params={r:'95e0e42ff2e59371',t:'MTc1MjMyNjk4Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";
+            b.getElementsByTagName('head')[0].appendChild(d);
+          }
+        }
+        if (document.body) {
+          var a = document.createElement('iframe');
+          a.height = 1;
+          a.width = 1;
+          a.style.position = 'absolute';
+          a.style.top = 0;
+          a.style.left = 0;
+          a.style.border = 'none';
+          a.style.visibility = 'hidden';
+          document.body.appendChild(a);
+          if ('loading' !== document.readyState) c();
+          else if (window.addEventListener)
+            document.addEventListener('DOMContentLoaded', c);
+          else {
+            var e = document.onreadystatechange || function () {};
+            document.onreadystatechange = function (b) {
+              e(b);
+              'loading' !== document.readyState &&
+                ((document.onreadystatechange = e), c());
+            };
+          }
+        }
+      })();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Integration Calculator - Hyperbolic Sine Function</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        margin: 0;
+        padding: 20px;
+        background-color: #f0f4f8;
+        color: #333;
+      }
+
+      h1 {
+        color: #1a5276;
+        text-align: center;
+        margin-bottom: 30px;
+        padding: 20px;
+        background-color: #d4e6f1;
+        border-radius: 12px;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+        font-size: 28px;
+      }
+
+      .container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 30px;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .left-side,
+      .right-side {
+        flex: 1;
+        min-width: 300px;
+        background-color: white;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+      }
+
+      .form-group {
+        margin-bottom: 25px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 10px;
+        font-weight: bold;
+        color: #2874a6;
+        font-size: 18px;
+      }
+
+      input[type='number'] {
+        width: 100%;
+        padding: 12px;
+        border: 2px solid #d4e6f1;
+        border-radius: 6px;
+        font-size: 16px;
+        transition: border-color 0.3s;
+      }
+
+      input[type='number']:focus {
+        border-color: #3498db;
+        outline: none;
+        box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+      }
+
+      h2 {
+        color: #2874a6;
+        border-bottom: 3px solid #3498db;
+        padding-bottom: 10px;
+        margin-top: 0;
+        font-size: 24px;
+      }
+
+      h3 {
+        font-size: 16px;
+        font-weight: normal;
+        color: #5d6d7e;
+        margin: 12px 0;
+        line-height: 1.5;
+      }
+
+      p {
+        font-weight: bold;
+        margin: 20px 0 10px;
+        color: #2c3e50;
+        font-size: 18px;
+      }
+
+      #result {
+        background-color: #ebf5fb;
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 25px;
+        font-size: 20px;
+        border-left: 5px solid #3498db;
+      }
+
+      #steps {
+        background-color: #f8f9fa;
+        padding: 20px;
+        border-radius: 8px;
+        border-left: 5px solid #2ecc71;
+      }
+
+      #steps ol {
+        padding-left: 20px;
+      }
+
+      #steps li {
+        margin-bottom: 20px;
+      }
+
+      .formula {
+        text-align: center;
+        font-size: 24px;
+        margin: 15px 0;
+        color: #1a5276;
+      }
+
+      .math-symbol {
+        font-family: 'Times New Roman', serif;
+        font-style: italic;
+      }
+
+      .info-box {
+        background-color: #e8f8f5;
+        border-left: 5px solid #1abc9c;
+        padding: 15px;
+        margin-top: 20px;
+        border-radius: 5px;
+      }
+
+      @media (max-width: 768px) {
+        .container {
+          flex-direction: column;
+        }
+
+        h1 {
+          font-size: 24px;
+          padding: 15px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1>
+      Hyperbolic Function Integration Formula:<br /><br />
+      ∫ sinh(x) dx = cosh(x) + C
+    </h1>
+    <div class="container">
+      <div class="left-side">
+        <h2>Enter Value:</h2>
+
+        <div class="form-group">
+          <label for="x-value">Enter the value of x:</label>
+          <input
+            type="number"
+            id="x-value"
+            oninput="calculate()"
+            step="any"
+            placeholder="Enter a value..."
+          />
+        </div>
+
+        <p>Instructions:</p>
+        <h3>1. Enter any real number value for x</h3>
+        <h3>2. The calculator will find the indefinite integral of sinh(x)</h3>
+        <h3>3. Remember that cosh(x) is the antiderivative of sinh(x)</h3>
+
+        <div class="formula">
+          <span class="math-symbol">∫</span> sinh(x) dx = cosh(x) + C
+        </div>
+
+        <div class="info-box">
+          <p style="margin-top: 0">
+            <strong>About Hyperbolic Functions:</strong>
+          </p>
+          <p style="font-weight: normal">
+            Hyperbolic functions are analogous to the circular trigonometric
+            functions:
+          </p>
+          <ul style="font-weight: normal">
+            <li>sinh(x) = (e<sup>x</sup> - e<sup>-x</sup>)/2</li>
+            <li>cosh(x) = (e<sup>x</sup> + e<sup>-x</sup>)/2</li>
+          </ul>
+          <p style="font-weight: normal">
+            Unlike trigonometric functions, hyperbolic functions are defined for
+            all real numbers.
+          </p>
+        </div>
+      </div>
+
+      <div class="right-side">
+        <div id="result">Enter a value to see the result</div>
+        <div id="steps"></div>
+      </div>
+    </div>
+
+    <script>
+      // Function to handle the calculation of the integral of sinh(x)
+      function calculate() {
+        const x = parseFloat(document.getElementById('x-value').value);
+
+        if (isNaN(x)) {
+          document.getElementById('result').innerHTML =
+            '<strong>Please enter a valid number for x.</strong>';
+          document.getElementById('steps').innerHTML = ''; // Clear the steps
+          return;
+        }
+
+        // Calculate the result using the formula
+        // cosh(x) = (e^x + e^-x)/2
+        const result = (Math.exp(x) + Math.exp(-x)) / 2;
+
+        // Display the result with appropriate formatting
+        document.getElementById(
+          'result'
+        ).innerHTML = `<strong>Result: ∫ sinh(${x.toFixed(
+          4
+        )}) dx = cosh(${x.toFixed(4)}) + C = ${result.toFixed(4)} + C</strong>`;
+
+        // Calculate sinh(x) for display in steps
+        const sinhX = (Math.exp(x) - Math.exp(-x)) / 2;
+
+        // Generate step-by-step solution
+        let stepsHTML = `
+        <strong>Steps to Solve:</strong>
+        <ol>
+          <li><strong>Understand the formula:</strong><br>
+              The formula for integrating sinh(x) is:
+              ∫ sinh(x) dx = cosh(x) + C
+          </li>
+          <li><strong>Apply the formula directly:</strong><br>
+              For x = ${x.toFixed(4)}:<br>
+              ∫ sinh(${x.toFixed(4)}) dx = cosh(${x.toFixed(4)}) + C
+          </li>
+          <li><strong>Calculate cosh(${x.toFixed(4)}):</strong><br>
+              cosh(x) = (e<sup>x</sup> + e<sup>-x</sup>)/2<br>
+              cosh(${x.toFixed(4)}) = (e<sup>${x.toFixed(
+          4
+        )}</sup> + e<sup>-${x.toFixed(4)}</sup>)/2<br>
+              cosh(${x.toFixed(4)}) = (${Math.exp(x).toFixed(4)} + ${Math.exp(
+          -x
+        ).toFixed(4)})/2<br>
+              cosh(${x.toFixed(4)}) = ${result.toFixed(4)}
+          </li>
+          <li><strong>Final result:</strong><br>
+              ∫ sinh(${x.toFixed(4)}) dx = ${result.toFixed(4)} + C
+          </li>
+        </ol>
+        <p><strong>Note:</strong> The constant of integration (C) represents the fact that there are infinitely many antiderivatives that differ by a constant.</p>
+        <p><strong>Verification:</strong> You can verify this result by differentiating cosh(x) to get sinh(x).</p>
+        <p><strong>For reference:</strong> At x = ${x.toFixed(
+          4
+        )}, sinh(${x.toFixed(4)}) = ${sinhX.toFixed(4)}</p>`;
+
+        document.getElementById('steps').innerHTML = stepsHTML;
+      }
+    </script>
+    <script>
+      (function () {
+        function c() {
+          var b = a.contentDocument || a.contentWindow.document;
+          if (b) {
+            var d = b.createElement('script');
+            d.innerHTML =
+              "window.__CF$cv$params={r:'95e0d8ca269d9380',t:'MTc1MjMyNjUxOS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";
+            b.getElementsByTagName('head')[0].appendChild(d);
+          }
+        }
+        if (document.body) {
+          var a = document.createElement('iframe');
+          a.height = 1;
+          a.width = 1;
+          a.style.position = 'absolute';
+          a.style.top = 0;
+          a.style.left = 0;
+          a.style.border = 'none';
+          a.style.visibility = 'hidden';
+          document.body.appendChild(a);
+          if ('loading' !== document.readyState) c();
+          else if (window.addEventListener)
+            document.addEventListener('DOMContentLoaded', c);
+          else {
+            var e = document.onreadystatechange || function () {};
+            document.onreadystatechange = function (b) {
+              e(b);
+              'loading' !== document.readyState &&
+                ((document.onreadystatechange = e), c());
+            };
+          }
+        }
+      })();
+    </script>
+  </body>
+</html>

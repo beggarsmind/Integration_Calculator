@@ -27,27 +27,4 @@ Core Features
 Prerequisites
 Programming Language: HTML
 
-Installation
-bash
-Copy
-Edit
-# 1. Clone the repository
-git clone https://github.com/beggarsmind/Integration_Calculator
 
-# 2. Navigate to the project directory
-cd Integration_Calculator
-
-# 3. Install dependencies
-echo 'INSERT-INSTALL-COMMAND-HERE'
-▶️ Usage
-bash
-Copy
-Edit
-# Run the project
-echo 'INSERT-RUN-COMMAND-HERE'
-🧪 Testing
-bash
-Copy
-Edit
-# Test suite using {test_framework}
-echo 'INSERT-TEST-COMMAND-HERE'
